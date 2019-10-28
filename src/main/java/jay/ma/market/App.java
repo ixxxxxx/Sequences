@@ -17,10 +17,13 @@ public class App extends AbstractActor {
             }).build();
     }
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws InterruptedException {
         ActorSystem system = ActorSystem.create("sequences");
         var seqRef = system.actorOf(SequencesActor.props(), "sequences");
         var mineRef = system.actorOf(Props.create(App.class), "ask");
-        seqRef.tell("next", mineRef);
+        while (true) {
+            seqRef.tell("next", mineRef);
+            Thread.sleep(500);
+        }
     }
 }
